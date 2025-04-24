@@ -172,7 +172,7 @@ public class UpdateProduct extends JFrame {
 
     private ArrayList<String> getCategoriesFromDatabase() throws SQLException {
         ArrayList<String> categories = new ArrayList<>();
-        String query = "SELECT category_name FROM Categories";
+        String query = "SELECT CategoryName FROM Categories";
 
         try (Connection conn = connect.getConnection();
              Statement stmt = conn.createStatement();
@@ -204,7 +204,7 @@ public class UpdateProduct extends JFrame {
     }
 
     private String getCategoryName(int categoryId) throws SQLException {
-        String query = "SELECT category_name FROM Categories WHERE category_id = ?";
+        String query = "SELECT CategoryName FROM Categories WHERE CategoryID = ?";
 
         try (Connection conn = connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -267,7 +267,7 @@ public class UpdateProduct extends JFrame {
     }
 
     private int getCategoryId(String categoryName) throws SQLException {
-        String query = "SELECT category_id FROM Categories WHERE category_name = ?";
+        String query = "SELECT CategoryID FROM Categories WHERE CategoryName = ?";
 
         try (Connection conn = connect.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

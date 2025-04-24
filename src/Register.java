@@ -19,6 +19,7 @@ public class Register extends JFrame {
     public Register() {
 
         setSize(500, 500);
+        panel.setBackground(new Color(137, 207, 240));
 
         setContentPane(panel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

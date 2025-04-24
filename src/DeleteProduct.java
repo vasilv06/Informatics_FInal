@@ -15,6 +15,7 @@ public class DeleteProduct extends JFrame {
         setSize(500, 300);
         setContentPane(mainPanel);
         setVisible(true);
+        mainPanel.setBackground(new Color(137, 207, 240));
 
         deleteButton.addActionListener(e -> deleteSelectedProduct());
         backButton.addActionListener(e -> {

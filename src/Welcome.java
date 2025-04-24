@@ -13,10 +13,12 @@ public class Welcome extends JFrame {
 
 
 
-        first_name.setText("Welcome " + user.getFirst_name());
+        first_name.setText("                                            Welcome " + user.getFirst_name() + ":");
 
         setContentPane(panel);
         setVisible(true);
+        panel.setBackground(new Color(137, 207, 240));
+
 
         ImageIcon icon = user.getImageIcon();
         img.setIcon(icon);

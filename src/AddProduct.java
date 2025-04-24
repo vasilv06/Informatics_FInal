@@ -18,6 +18,7 @@ public class AddProduct extends JFrame {
         setSize(600, 500);
         setContentPane(mainPanel);
         setVisible(true);
+        mainPanel.setBackground(new Color(137, 207, 240));
 
         addProductButton.addActionListener(new ActionListener() {
             @Override
@@ -53,7 +54,7 @@ public class AddProduct extends JFrame {
             double price = Double.parseDouble(priceText);
             int reorderLevel = Integer.parseInt(reorderText);
 
-            String query = "INSERT INTO Products (product_name, category_id, stock_quantity, reorder_level, price) " +
+            String query = "INSERT INTO Products (ProductName, CategoryID, StockQuantity, ReorderLevel, Price) " +
                     "VALUES (?, ?, ?, ?, ?)";
 
             try (Connection conn = connect.getConnection();
@@ -91,7 +92,7 @@ public class AddProduct extends JFrame {
     private void refreshInventoryManagement() {
         try {
             InventoryManagement inventoryManagement = new InventoryManagement();
-            inventoryManagement.loadInventoryData();  // Ensure this method correctly reloads the data
+            inventoryManagement.loadInventoryData();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error refreshing inventory: " + e.getMessage());
         }

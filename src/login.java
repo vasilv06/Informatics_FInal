@@ -13,6 +13,8 @@ public class login extends JFrame {
         setSize(500, 500);
         setContentPane(panel);
         setVisible(true);
+        panel.setBackground(new Color(137, 207, 240));
+
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
