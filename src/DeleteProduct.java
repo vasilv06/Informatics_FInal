@@ -68,6 +68,7 @@ public class DeleteProduct extends JFrame {
     }
 
     public static void main(String[] args) {
-        new DeleteProduct();
+        new DeleteProduct(); // calls delete products page
+
     }
 }
