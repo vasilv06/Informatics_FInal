@@ -4,30 +4,41 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class InventoryManagement extends JFrame {
-    private JPanel panel;              // Bound from GUI form
-    private JTable table;              // Table with model set in GUI form
+    private JPanel panel;
+    private JTable table;
     private JButton refreshButton;
     private JButton backButton;
     private JButton addProductButton;
     private JButton updateButton;
     private JButton deleteButton;
     private JComboBox<Product> productComboBox;
+    private DefaultTableModel model;
 
     public InventoryManagement() {
-        setTitle("Inventory Management");
+        model = new DefaultTableModel();
+        table = new JTable(model);
+        model.addColumn("Product ID");
+        model.addColumn("Product Name");
+        model.addColumn("Category ID");
+        model.addColumn("Quantity");
+        model.addColumn("Price");
+
+
+        loadInventoryData();
+
         setContentPane(panel);
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel.setBackground(new Color(137, 207, 240));
 
         initializeActions();
-        loadInventoryData();
+
         refreshProductComboBox();
 
         setVisible(true);
     }
 
-    private void initializeActions() {
+    public void initializeActions() {
         refreshButton.addActionListener(e -> {
             loadInventoryData();
             refreshProductComboBox();
@@ -43,8 +54,8 @@ public class InventoryManagement extends JFrame {
         deleteButton.addActionListener(e -> newDeleteProduct());
     }
 
-    private void loadInventoryData() {
-        // Use the table model defined in the GUI form
+    public void loadInventoryData() {
+
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         ArrayList<Product> products = connect.getInventory();
