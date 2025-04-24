@@ -22,6 +22,7 @@ public class connect {
             pstmt.setBinaryStream(3, img);
             pstmt.setString(4, hashPassword);
             pstmt.executeUpdate();
+            System.out.println("help");
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
