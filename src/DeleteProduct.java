@@ -1,9 +1,7 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.*;
-
+import java.util.ArrayList;
 public class DeleteProduct extends JFrame {
     private JPanel mainPanel;
     private JButton deleteButton;
@@ -11,65 +9,63 @@ public class DeleteProduct extends JFrame {
     private JLabel productDetailsLabel;
     private JComboBox<Product> productComboBox;
 
-    public DeleteProduct() {
+    private Product productToDelete;  // This will hold the product to delete
+
+    // Constructor to accept the product to delete
+    public DeleteProduct(Product selectedProduct) {
+        this.productToDelete = selectedProduct;  // Store the selected product
+
         setSize(500, 300);
         setContentPane(mainPanel);
         setVisible(true);
         mainPanel.setBackground(new Color(137, 207, 240));
 
+        // Initialize the product details
+        updateProductDetails();
+
+        // Add action listeners using lambdas
         deleteButton.addActionListener(e -> deleteSelectedProduct());
         backButton.addActionListener(e -> {
             dispose();
             new InventoryManagement();
         });
-
-
     }
 
-
-
     private void updateProductDetails() {
-        Product selected = (Product) productComboBox.getSelectedItem();
-        if (selected != null) {
+        if (productToDelete != null) {
             String details = String.format(
-                    "Name: %s | Category ID: %d | Stock: %d | Price: $%.2f",
-                    selected.getProductName(),
-                    selected.getCategoryID(),
-                    selected.getStockQuantity(),
-                    selected.getPrice()
+                    "Do you want to delete : %s | Category ID: %d | Stock: %d | Price: $%.2f",
+                    productToDelete.getProductName(),
+                    productToDelete.getCategoryID(),
+                    productToDelete.getStockQuantity(),
+                    productToDelete.getPrice()
             );
             productDetailsLabel.setText(details);
         }
     }
 
     private void deleteSelectedProduct() {
-        Product selected = (Product) productComboBox.getSelectedItem();
-        if (selected == null) {
-            JOptionPane.showMessageDialog(this, "Please select a product to delete.");
-            return;
-        }
+        if (productToDelete != null) {
+            int confirm = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to delete '" + productToDelete.getProductName() + "'?",
+                    "Confirm Deletion",
+                    JOptionPane.YES_NO_OPTION
+            );
 
-        int confirm = JOptionPane.showConfirmDialog(
-                this,
-                "Are you sure you want to delete '" + selected.getProductName() + "'?",
-                "Confirm Deletion",
-                JOptionPane.YES_NO_OPTION
-        );
+            if (confirm == JOptionPane.YES_OPTION) {
+                boolean success = connect.deleteProduct(productToDelete.getProductID());
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            connect.deleteProduct(selected.getProductID()); // Call the deleteProduct method
-            JOptionPane.showMessageDialog(this, "Product deleted successfully!");
-            productComboBox.removeItem(selected);
-            if (productComboBox.getItemCount() > 0) {
-                productComboBox.setSelectedIndex(0);
-            } else {
-                productDetailsLabel.setText("No products available");
+                if (success) {
+                    JOptionPane.showMessageDialog(this, "Product deleted successfully!");
+                    dispose();  // Close the delete window
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to delete product.");
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "No product selected.");
         }
     }
 
-    public static void main(String[] args) {
-        new DeleteProduct();
-
-    }
 }

@@ -12,18 +12,27 @@ public class InventoryManagement extends JFrame {
     private JButton updateButton;
     private JButton deleteButton;
     private JComboBox<Product> productComboBox;
-    private DefaultTableModel model;
+
+    public static DefaultTableModel model;  // Declare the model as public and static for access across classes
 
     public InventoryManagement() {
+        // Initialize the DefaultTableModel and set columns
         model = new DefaultTableModel();
-        table = new JTable(model);
         model.addColumn("Product ID");
         model.addColumn("Product Name");
         model.addColumn("Category ID");
         model.addColumn("Quantity");
         model.addColumn("Price");
 
+        // Initialize JTable and set its model
+        table = new JTable(model);
 
+        // Make the table scrollable by wrapping it in a JScrollPane
+        JScrollPane scrollPane = new JScrollPane(table);
+        panel.setLayout(new BorderLayout()); // Set the panel layout to BorderLayout
+        panel.add(scrollPane, BorderLayout.CENTER);  // Add the scrollable table to the center of the panel
+
+        // Load data and update the table
         loadInventoryData();
 
         setContentPane(panel);
@@ -32,9 +41,7 @@ public class InventoryManagement extends JFrame {
         panel.setBackground(new Color(137, 207, 240));
 
         initializeActions();
-
         refreshProductComboBox();
-
         setVisible(true);
     }
 
@@ -55,11 +62,10 @@ public class InventoryManagement extends JFrame {
     }
 
     public void loadInventoryData() {
-
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.setRowCount(0);
-        ArrayList<Product> products = connect.getInventory();
+        model.setRowCount(0);  // Clear the table before adding new rows
+        ArrayList<Product> products = connect.getInventory();  // Get products from the database
         for (Product product : products) {
+            // Add data to the table model (rows will appear under the column names)
             model.addRow(new Object[]{
                     product.getProductID(),
                     product.getProductName(),
@@ -71,10 +77,10 @@ public class InventoryManagement extends JFrame {
     }
 
     private void refreshProductComboBox() {
-        productComboBox.removeAllItems();
-        ArrayList<Product> products = connect.getInventory();
+        productComboBox.removeAllItems();  // Clear the combo box
+        ArrayList<Product> products = connect.getInventory();  // Get products from the database
         for (Product product : products) {
-            productComboBox.addItem(product);
+            productComboBox.addItem(product);  // Add items to combo box
         }
     }
 
@@ -89,7 +95,17 @@ public class InventoryManagement extends JFrame {
     }
 
     private void newDeleteProduct() {
-        new DeleteProduct();
+        Product selectedProduct = (Product) productComboBox.getSelectedItem();
+
+        if (selectedProduct != null) {
+            new DeleteProduct(selectedProduct);
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a product to delete.");
+        }
         dispose();
+    }
+
+    public static void main(String[] args) {
+        new InventoryManagement();
     }
 }

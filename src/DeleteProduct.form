@@ -10,10 +10,10 @@
     <children>
       <component id="55218" class="javax.swing.JLabel" binding="productDetailsLabel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Label"/>
+          <text value="Do you want to delete the selected product?"/>
         </properties>
       </component>
       <vspacer id="a3dba">
@@ -26,7 +26,7 @@
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Button"/>
+          <text value="Back"/>
         </properties>
       </component>
       <component id="cf23d" class="javax.swing.JButton" binding="deleteButton">
@@ -34,7 +34,7 @@
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Button"/>
+          <text value="Delete"/>
         </properties>
       </component>
     </children>

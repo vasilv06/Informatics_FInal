@@ -5,11 +5,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class connect {
-     static final String URL = "jdbc:mysql://localhost:3306/acs";
-     static final String USER = "root";
-     static final String PASSWORD = "0000";
+    static final String URL = "jdbc:mysql://localhost:3306/acs";
+    static final String USER = "root";
+    static final String PASSWORD = "0000";
 
-     static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 
@@ -22,7 +22,6 @@ public class connect {
             pstmt.setBinaryStream(3, img);
             pstmt.setString(4, hashPassword);
             pstmt.executeUpdate();
-            System.out.println("help");
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -80,12 +79,13 @@ public class connect {
         }
     }
 
-    public static void deleteProduct(int productID) {
+    public static boolean deleteProduct(int productID) {
         String query = "DELETE FROM Products WHERE ProductID = ?";
         try (Connection connection = getConnection();
              PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setInt(1, productID);
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;  // Return true if a row was deleted, false otherwise
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -104,7 +104,7 @@ public class connect {
                 int stockQuantity = rs.getInt("StockQuantity");
                 int reorderLevel = rs.getInt("ReorderLevel");
                 double price = rs.getDouble("Price");
-                products.add(new Product(productID, productName, categoryID, stockQuantity, reorderLevel, (int)price));
+                products.add(new Product(productID, productName, categoryID, stockQuantity, reorderLevel, price));  // Keep price as double
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
