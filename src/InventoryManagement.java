@@ -13,28 +13,16 @@ public class InventoryManagement extends JFrame {
     private JButton deleteButton;
     private JComboBox<Product> productComboBox;
 
-    public static DefaultTableModel model;  // Declare the model as public and static for access across classes
+    private DefaultTableModel model;
 
     public InventoryManagement() {
-        // Initialize the DefaultTableModel and set columns
+        // Initialize the DefaultTableModel
         model = new DefaultTableModel();
-        model.addColumn("Product ID");
-        model.addColumn("Product Name");
-        model.addColumn("Category ID");
-        model.addColumn("Quantity");
-        model.addColumn("Price");
-
-        // Initialize JTable and set its model
-        table = new JTable(model);
-
-        // Make the table scrollable by wrapping it in a JScrollPane
-        JScrollPane scrollPane = new JScrollPane(table);
-        panel.setLayout(new BorderLayout()); // Set the panel layout to BorderLayout
-        panel.add(scrollPane, BorderLayout.CENTER);  // Add the scrollable table to the center of the panel
+        model.setColumnIdentifiers(new Object[]{"Product ID", "Product Name", "Category", "Quantity", "Price"});
+        table.setModel(model); // Set the table model
 
         // Load data and update the table
         loadInventoryData();
-
         setContentPane(panel);
         setSize(800, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,11 +49,11 @@ public class InventoryManagement extends JFrame {
         deleteButton.addActionListener(e -> newDeleteProduct());
     }
 
+    // Method to load inventory data into the JTable
     public void loadInventoryData() {
         model.setRowCount(0);  // Clear the table before adding new rows
         ArrayList<Product> products = connect.getInventory();  // Get products from the database
         for (Product product : products) {
-            // Add data to the table model (rows will appear under the column names)
             model.addRow(new Object[]{
                     product.getProductID(),
                     product.getProductName(),
@@ -76,6 +64,7 @@ public class InventoryManagement extends JFrame {
         }
     }
 
+    // Method to populate the ComboBox with products
     private void refreshProductComboBox() {
         productComboBox.removeAllItems();  // Clear the combo box
         ArrayList<Product> products = connect.getInventory();  // Get products from the database
@@ -84,21 +73,28 @@ public class InventoryManagement extends JFrame {
         }
     }
 
+    // Navigate to the Add Product window
     private void newAddProduct() {
         new AddProduct();
         dispose();
     }
 
+    // Navigate to the Update Product window
     private void newUpdateProduct() {
-        new UpdateProduct();
+        Product selectedProduct = (Product) productComboBox.getSelectedItem();
+        if (selectedProduct != null) {
+            new UpdateProduct(selectedProduct);  // Pass the selected product to the UpdateProduct window
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a product to update.");
+        }
         dispose();
     }
 
+    // Navigate to the Delete Product window
     private void newDeleteProduct() {
         Product selectedProduct = (Product) productComboBox.getSelectedItem();
-
         if (selectedProduct != null) {
-            new DeleteProduct(selectedProduct);
+            new DeleteProduct(selectedProduct);  // Pass the selected product to the DeleteProduct window
         } else {
             JOptionPane.showMessageDialog(this, "Please select a product to delete.");
         }

@@ -58,7 +58,8 @@ public class DeleteProduct extends JFrame {
 
                 if (success) {
                     JOptionPane.showMessageDialog(this, "Product deleted successfully!");
-                    dispose();  // Close the delete window
+                    dispose();
+                    new InventoryManagement();// Close the delete window
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to delete product.");
                 }
