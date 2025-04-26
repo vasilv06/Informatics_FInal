@@ -15,23 +15,19 @@ public class UpdateProduct extends JFrame {
 
     private Product productToUpdate;  // Store the selected product for updating
 
+    // Constructor to initialize the form with the selected product
     public UpdateProduct(Product selectedProduct) {
-        this.productToUpdate = selectedProduct;  // Store the selected product
+        this.productToUpdate = selectedProduct; // Store the selected product
 
+        // Initialize components
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 500);
         setContentPane(mainPanel);
         setVisible(true);
         mainPanel.setBackground(new Color(137, 207, 240));
 
-        // Initialize the ComboBox for products
-        productComboBox = new JComboBox<>();
-
-        // Populate the product ComboBox
-        populateProductComboBox();
-
-        // Pre-fill the form fields with the selected product's details
-        loadSelectedProductData();
+        // Load the selected product's data immediately
+        loadSelectedProductData(selectedProduct);  // Pass the selected product to load its data
 
         // Add listeners for the update button and back button
         updateButton.addActionListener(e -> updateProduct());
@@ -41,7 +37,13 @@ public class UpdateProduct extends JFrame {
         });
 
         // Add listener to ComboBox to load product data when a product is selected
-        productComboBox.addActionListener(e -> loadSelectedProductData());
+        productComboBox.addActionListener(e -> {
+            Product selectedProductFromComboBox = (Product) productComboBox.getSelectedItem();
+            if (selectedProductFromComboBox != null) {
+                loadSelectedProductData(selectedProductFromComboBox); // Pass the selected product to update the fields
+            }
+        });
+
 
         setVisible(true);
     }
@@ -64,16 +66,12 @@ public class UpdateProduct extends JFrame {
     }
 
     // Load the selected product's data into the form fields
-    private void loadSelectedProductData() {
-        // Get the selected product from the ComboBox
-        productToUpdate = (Product) productComboBox.getSelectedItem();
-
-        if (productToUpdate != null) {
-            // Set the selected product's data in the form fields
-            productNameField.setText(productToUpdate.getProductName());
-            quantityField.setText(String.valueOf(productToUpdate.getStockQuantity()));
-            priceField.setText(String.valueOf(productToUpdate.getPrice()));
-            reorderLevelField.setText(String.valueOf(productToUpdate.getReorderLevel()));
+    private void loadSelectedProductData(Product product) {
+        if (product != null) {
+            productNameField.setText(product.getProductName());
+            quantityField.setText(String.valueOf(product.getStockQuantity()));
+            priceField.setText(String.valueOf(product.getPrice()));
+            reorderLevelField.setText(String.valueOf(product.getReorderLevel()));
         }
     }
 
