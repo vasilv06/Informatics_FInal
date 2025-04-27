@@ -21,9 +21,25 @@ public class InventoryManagement extends JFrame {
 
 
     public InventoryManagement() {
-        // Initialize the DefaultTableModel
+
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] { },
+                new String [] {
+                        "Product ID", "Product Name", "Category", "Quantity", "Price"
+                }
+        ));
+
         model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[]{"Product ID", "Product Name", "Category", "Quantity", "Price"});
+        if (model.getColumnCount() == 0) {
+            model.setColumnIdentifiers(new Object[]{
+                    "Product ID",
+                    "Product Name",
+                    "Category",
+                    "Quantity",
+                    "Price"
+            });
+        }
         table.setModel(model); // Set the table model
 
 
